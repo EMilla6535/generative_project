@@ -25,7 +25,10 @@ def get_random_ds(image_size, n_items, noise_steps):
                                                    tf.TensorSpec(shape=(image_size, image_size, 3), dtype='float32')))
     return random_ds.repeat(count=None)
 
-batch_size = 9
+"""
+Note about dataset: This should be a saved dataset using tf.data.Dataset.save() method.
+"""
+# dataset_path = '/path/to/dataset' <- For testing
 """
 load_dataset():
 - Load image dataset. Note: The original dataset was too big, so I splitted it into four smaller parts.
@@ -37,13 +40,10 @@ load_dataset():
     - Gaussian noise.
 - Join this two datasets.
 """
-def load_dataset(dataset_path, batch_size):
-    #img_dataset = tf.data.Dataset.load('/kaggle/input/dataset-maker/256_0_1000_dataset/dataset')
-    img_dataset = tf.data.Dataset.load('/kaggle/input/dataset-maker/256_1000_2000_dataset/dataset')
-    #img_dataset = tf.data.Dataset.load('/kaggle/input/dataset-maker/256_2000_3000_dataset/dataset')
-    #img_dataset = tf.data.Dataset.load('/kaggle/input/dataset-maker/256_3000_4319_dataset/dataset')
-
+def load_dataset(dataset_path, batch_size=9, img_size=256, noise_steps=100):
+    img_dataset = tf.data.Dataset.load(dataset_path)
+    
     n_train = img_dataset.cardinality().numpy()
-    rnd_dataset = get_random_ds(256, n_train, 1000)
+    rnd_dataset = get_random_ds(img_size, n_train, noise_steps)
     train_dataset = tf.data.Dataset.zip(img_dataset, rnd_dataset).shuffle(n_train).batch(batch_size).prefetch(batch_size)
     return train_dataset

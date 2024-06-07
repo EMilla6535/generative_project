@@ -301,6 +301,7 @@ normal = rng.normal(shape=[9, 256, 256, 3], mean=0.0, stddev=1.0, dtype='float32
 t_sample = rng.uniform(shape=[9, 1], minval=1, maxval=1000, dtype='int32')
 
 # Uncomment below to test model
+
 #model = DiffusionModel(inner_channel=64, ch_mult=(1, 2, 4, 8), bot_blocks=3, image_size=64)#UNet()
 #model(normal, t_sample)
 #model.summary()
