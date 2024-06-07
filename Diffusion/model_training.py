@@ -31,6 +31,8 @@ model = DifussionModel(x_shape=(64, 64, 3, ), t_shape=(None, ))
 mc = tf.keras.callbacks.ModelCheckpoint('saved_model.keras', monitor='loss', save_best_only=True, mode='min')
 sc = SampleCallback()
 
+train_dataset = load_dataset('/path/to/dataset')
+
 optimizer = tf.keras.optimizers.AdamW(learning_rate=3e-4)
 mse_loss = tf.keras.losses.MeanSquaredError()
 model.compile(optimizer=optimizer, loss=mse_loss, metrics=['mse'])
@@ -39,6 +41,6 @@ model.fit(x=train_dataset, epochs=epochs, callbacks=[mc, sc])
 
 # Zip results
 filename = "saved_results"
-directory = base_path
+directory = base_path + '/result_images'
 make_archive(filename, "zip", directory)
 print("Finished!")
