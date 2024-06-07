@@ -26,13 +26,13 @@ batch_size = 9
 img_dataset_path = '/kaggle/input/mini-test-dataset/saved_dataset'
 """
 load_dataset():
-- Load image dataset
+- Load image dataset.
 - Normalize values with mean=0.5 & variance=0.25
-- Get the total number of samples
+- Get the total number of samples.
 - Get random dataset containing:
-    - Gaussian noise
-    - t samples representing noise steps
-- Join this two datasets
+    - Gaussian noise.
+    - t samples representing noise steps.
+- Join this two datasets.
 """
 def load_dataset(img_dataset_path, batch_size):
     img_dataset = tf.data.Dataset.load(img_dataset_path)
