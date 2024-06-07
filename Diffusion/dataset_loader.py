@@ -23,7 +23,10 @@ def get_random_ds(image_size, n_items, noise_steps):
     return random_ds.repeat(count=None)
 
 batch_size = 9
-img_dataset_path = '/kaggle/input/mini-test-dataset/saved_dataset'
+"""
+Note about dataset: This should be a saved dataset using tf.data.Dataset.save() method.
+"""
+img_dataset_path = '/path/to/dataset'
 """
 load_dataset():
 - Load image dataset.

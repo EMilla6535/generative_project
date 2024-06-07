@@ -188,6 +188,8 @@ class DifussionModel(tf.keras.Model):
 
         self.pos_enc_layer = PosEncLayer()
         
+        # To do: Construct the model based on parameters.
+        # Aiming to be more flexible.
         self.inc = DoubleConv(c_in, 64, prefix="inc")
         self.down1 = Down(64, 128, prefix="down1")
         self.sa1 = SelfAttention(128, 32, prefix="self_att_1")
