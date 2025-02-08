@@ -10,9 +10,11 @@ from model import DiffusionModel
 from dataset_loader import load_dataset
 
 # Check if result path exists
-base_path = '/path/to/save/results'
-if not os.path.exists(base_path):
-    os.makedirs(base_path + '/result_images')
+BASE_PATH = '/path/to/save/results'
+DATASET_PATH = '/path/to/dataset'
+
+if not os.path.exists(BASE_PATH):
+    os.makedirs(BASE_PATH + '/result_images')
 
 # Load sample images to test model
 class SampleCallback(tf.keras.callbacks.Callback):
@@ -28,7 +30,7 @@ class SampleCallback(tf.keras.callbacks.Callback):
         """
         if (epoch + 1) % 10 == 0:
             test_img = []
-            filepath = '/path/to/test/images'
+            filepath = '/path/to/test/images' # CHANGE TO DIRECTORY WHERE TO SAVE TEST IMAGES
             rescaling_layer = tf.keras.layers.Rescaling(scale=1./255)
             upsample_layer = tf.keras.layers.UpSampling2D(size=4, data_format='channels_last', interpolation='bicubic')
             for filename in glob.glob(filepath + '/*.jpg'):
@@ -51,7 +53,7 @@ class SampleCallback(tf.keras.callbacks.Callback):
             in_data = self.model.noise_inputs(test_img, s, u, noise)
             result = self.model.predict(in_data, batch_size=test_img.shape[0])
             for i in range(result.shape[0]):
-                tf.keras.utils.save_img(f'{base_path}/result_images/{epoch}_result_{i}.jpg', result[i], data_format='channels_last', scale=True)
+                tf.keras.utils.save_img(f'{BASE_PATH}/result_images/{epoch}_result_{i}.jpg', result[i], data_format='channels_last', scale=True)
 
 epochs = 100
 
@@ -61,7 +63,7 @@ sc = SampleCallback()
 optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4)
 mse_loss = tf.keras.losses.MeanSquaredError()
 
-train_dataset = load_dataset('/path/to/dataset')
+train_dataset = load_dataset(DATASET_PATH)
 """
 If first_train = False -> continue training using saved weights.
 """
@@ -80,6 +82,6 @@ else:
     loaded_model.fit(train_dataset, epochs=epochs, callbacks=[mc, sc])
 
 filename = "sampled_results"
-directory = base_path + '/result_images'
+directory = BASE_PATH + '/result_images'
 make_archive(filename, "zip", directory)
 print("Finished!")
